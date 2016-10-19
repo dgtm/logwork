@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "logwork"
+require 'thor'
+
+class Client < Thor
+  default_task :start
+
+  desc "start", "Log your Work"
+  def start(*argv)
+    unless argv.count == 3
+      say("Illegal Usage. Make sure the format is logwork start AGDEV-12345 00:30 'Finished my Job!'", :red)
+      exit
+    end
+
+    issue = argv[0]
+    time = argv[1]
+    comment = argv[2]
+    log = Logwork.log(issue, time, comment)
+    say(log, :green)
+  end
+
+end
+
+Client.start(ARGV)
